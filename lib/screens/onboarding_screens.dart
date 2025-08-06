@@ -22,11 +22,13 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
   void initState() {
     super.initState();
     _controller.addListener(() {
-      if (_controller.page == 3 && !showDetailsPage) {
+      if (_controller.hasClients && _controller.page == 3 && !showDetailsPage) {
         setState(() {
           showDetailsPage = true;
         });
-      } else if (_controller.page! < 3 && showDetailsPage) {
+      } else if (_controller.hasClients &&
+          _controller.page! < 3 &&
+          showDetailsPage) {
         setState(() {
           showDetailsPage = false;
         });
@@ -43,7 +45,7 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
             child: Stack(
               children: [
                 PageView(
-                  controller: _controller, // Add controller here!
+                  controller: _controller,
                   children: [
                     const Frontpage(),
                     SharedOnboardingScreen(
@@ -93,8 +95,11 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
                             ),
                           );
                         } else {
+                          final currentPage = _controller.hasClients
+                              ? _controller.page?.round() ?? 0
+                              : 0;
                           _controller.animateToPage(
-                            _controller.page!.toInt() + 1,
+                            currentPage + 1,
                             duration: const Duration(milliseconds: 400),
                             curve: Curves.easeInOut,
                           );
