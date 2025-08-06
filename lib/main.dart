@@ -1,7 +1,9 @@
+import 'package:digital_expenz_tracker/screens/onboarding_screens.dart';
 import 'package:flutter/material.dart';
 
+// import 'package:ex
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: "Plant safer",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Inter"),
-      home: onbording,
+      home: const OnboardingScreens(),
     );
   }
 }
