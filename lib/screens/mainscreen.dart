@@ -44,10 +44,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      fetchAllExpences();
-      fetchAllIncome();
-    });
+    // Removed unnecessary setState here; async calls inside initState don't need setState wrapping
+    fetchAllExpences();
+    fetchAllIncome();
   }
 
   //function to add a new expense
@@ -72,11 +71,35 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  //function to remove a expense
+  void removeExpense(Expense expense) {
+    ExpenseService().deleteExpense(expense.id, context);
+    setState(() {
+      expenseList.remove(expense);
+    });
+  }
+
+  //function to remove income
+  void removeIncome(IncomeModel income) {
+    IncomeService().deleteIncome(income.id, context);
+    setState(() {
+      incomeList.remove(income);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      const HomeScreen(),
-      const TransactionScreen(),
+      HomeScreen(
+        expenseList: expenseList,
+        incomeList: incomeList,
+      ),
+      TransactionScreen(
+        expensesList: expenseList,
+        incomeList: incomeList,
+        onDismissedExpense: removeExpense,
+        onDismissedIncome: removeIncome,
+      ),
       AddNewScreen(
         addExpense: addNewExpense,
         addIncome: addNewIncome,
